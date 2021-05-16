@@ -9,8 +9,8 @@ The primary purpose of this sprint is to give you the opportunity to compose tog
 
 ## Getting Started ##
   - [ ] Install MongoDB.
-        * Follow the [installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition-with-homebrew).
-        * Follow [these instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition) to run MongoDB.
+       * Follow the [installation instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#install-mongodb-community-edition-with-homebrew).
+       * Follow [these instructions](https://docs.mongodb.com/manual/tutorial/install-mongodb-on-os-x/#run-mongodb-community-edition) to run MongoDB.
   - [ ] Install dependencies.
 ```
 $ npm install
