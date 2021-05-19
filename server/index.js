@@ -1,19 +1,24 @@
 const express = require('express');
+const cors = require('cors');
 const bodyParser = require('body-parser');
-const getReposByUsername = require('../helpers/github.js');
-const save = require('../database/index.js');
+const { getReposByUsername } = require('../helpers/github.js');
+const { save } = require('../database/index.js');
 let app = express();
 
+app.use(cors());
 app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
 
 app.post('/repos', function (req, res) {
-  const repo = getReposByUsername(req.data, (err, results) => {
-    if (err) { res.status(404).send(err); } else { return results; }
+  getReposByUsername(req.body.username, (err, results) => {
+    if (err) { res.status(404).send(err); } else {
+      save(results, (err, results) => {
+        if (err) { res.status(404).send(err); } else { res.status(200).send('Repos has been added!'); }
+      })
+     }
   })
-  save(repo, (err, results) => {
-    if (err) { res.status(400).send(err); } else { res.status(200).send('Repos has been added!'); }
-  })
+
 });
 
 app.get('/repos', function (req, res) {

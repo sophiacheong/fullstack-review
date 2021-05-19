@@ -26,10 +26,10 @@ let save = (data, callback) => {
       html_url: item.html_url,
       url: item.url,
     }
-  })
 
-  Repo.create(schemaData, (err, results) => {
-    if (err) { callback(err); } else { callback(null, results); }
+    Repo.create(schemaData, (err, results) => {
+      if (err) { callback(err); } else { callback(null, results); }
+    })
   })
 }
 
