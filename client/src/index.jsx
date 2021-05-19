@@ -17,12 +17,10 @@ class App extends React.Component {
     $.ajax({
       type: 'POST',
       url: 'http://127.0.0.1:1128/repos',
-      dataType: 'json',
-      data: {username: `${term}`},
-      success: (res) => { this.setState({
-        repos: res,
-      })},
-      error: (err) => { console.error(err.responseText); }
+      contentType: 'application/json',
+      data: JSON.stringify({username: `${term}`}),
+      success: () => { console.log('Success!'); },
+      error: (err) => { console.error(err); }
     })
     console.log(`${term} was searched`);
   }

@@ -15,21 +15,23 @@ let repoSchema = mongoose.Schema({
 let Repo = mongoose.model('Repo', repoSchema);
 
 let save = (data, callback) => {
-  data.forEach((item) => {
-    let schemaData = {
-      id: item.id,
-      name: item.name,
-      owner: {
-        login: item.owner.login,
-        id: item.owner.id,
-      },
-      html_url: item.html_url,
-      url: item.url,
-    }
+  let newRepo = new Repo({
+    id: data.id,
+    name: data.name,
+    owner: {
+      login: data.owner.login,
+      id: data.owner.id,
+    },
+    html_url: data.html_url,
+    url: data.url,
+  })
 
-    Repo.create(schemaData, (err, results) => {
-      if (err) { callback(err); } else { callback(null, results); }
-    })
+  newRepo.save((err, results) => {
+    if (err) {
+      callback(err);
+    } else {
+      console.log('Success!');
+    }
   })
 }
 
