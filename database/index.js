@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/fetcher');
+mongoose.connect('mongodb://localhost/fetcher', { useNewUrlParser: true, useUnifiedTopology: true });
 
 let repoSchema = mongoose.Schema({
   id: Number,
@@ -14,7 +14,7 @@ let repoSchema = mongoose.Schema({
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (data) => {
+let save = (data, callback) => {
   data.forEach((item) => {
     let schemaData = {
       id: item.id,
@@ -29,7 +29,7 @@ let save = (data) => {
   })
 
   Repo.create(schemaData, (err, results) => {
-    if (err) { console.error(err); } else { console.log(results, ' has been added'); }
+    if (err) { callback(err); } else { callback(null, results); }
   })
 }
 
