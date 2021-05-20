@@ -10,7 +10,8 @@ let repoSchema = mongoose.Schema({
     id: Number,
   },
   html_url: String,
-  url: String
+  url: String,
+  forks: Number,
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
@@ -25,6 +26,7 @@ let save = (data, callback) => {
     },
     html_url: data.html_url,
     url: data.url,
+    forks: data.forks_count,
   })
 
   newRepo.save((err, results) => {
@@ -38,7 +40,7 @@ let save = (data, callback) => {
 
 let getRepo = (callback) => {
   const repoDB = db.collection('repos');
-  repoDB.find().limit(25).toArray((err, results) => { callback(err, results); })
+  repoDB.find().sort({ forks: -1 }).limit(25).toArray((err, results) => { callback(err, results); })
 }
 
 module.exports.save = save;
