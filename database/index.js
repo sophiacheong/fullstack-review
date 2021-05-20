@@ -1,4 +1,5 @@
 const mongoose = require('mongoose');
+const db = mongoose.connection;
 mongoose.connect('mongodb://localhost/fetcher', { useNewUrlParser: true, useUnifiedTopology: true });
 
 let repoSchema = mongoose.Schema({
@@ -35,4 +36,10 @@ let save = (data, callback) => {
   })
 }
 
+let getRepo = (callback) => {
+  const repoDB = db.collection('repos');
+  repoDB.find().limit(25).toArray((err, results) => { callback(err, results); })
+}
+
 module.exports.save = save;
+module.exports.getRepo = getRepo;

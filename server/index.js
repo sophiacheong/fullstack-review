@@ -1,27 +1,32 @@
 const express = require('express');
-const cors = require('cors');
 const bodyParser = require('body-parser');
 const { getReposByUsername } = require('../helpers/github.js');
-const { save } = require('../database/index.js');
+const { save, getRepo } = require('../database/index.js');
 let app = express();
 
-app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
+app.use(function(req, res, next){
+	res.set({
+		'Access-Control-Allow-Origin': '*',
+		'Access-Control-Allow-Headers': '*'
+	})
+	next();
+});
 
 app.post('/repos', function (req, res) {
   getReposByUsername(req.body.username, (err, results) => {
-    if (err) { return res.status(404).send(err); } else {
-      results.forEach((item) => save(item, (err) => { return res.status(404).send(err); } ))
+    if (err) { res.status(404).send(err); } else {
+      results.forEach((item) => save(item, (err) => { res.status(404).send(err); } ))
      }
   })
 
-  return res.status(200).send();
+  res.status(200).send('Success');
 });
 
 app.get('/repos', function (req, res) {
-  getReposByUsername(req.data, (err, results) => {
+  getRepo((err, results) => {
     if (err) { res.status(404).send(err); } else { res.status(200).send(results); }
   })
 });
