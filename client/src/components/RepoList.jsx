@@ -5,7 +5,7 @@ const RepoList = (props) => (
     <h4> Repo List Component </h4>
     There are {props.repos.length} repos.
     {props.repos.map((item, index) => (
-      <div>
+      <div key={index}>
         <a href={item.html_url} target="_blank">{item.name}</a>
       </div>
     ))}
