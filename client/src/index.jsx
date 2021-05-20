@@ -4,43 +4,34 @@ import $ from 'jquery';
 import Search from './components/Search.jsx';
 import RepoList from './components/RepoList.jsx';
 
+const url = 'http://127.0.0.1:1128/repos';
+
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       repos: []
     }
-
   }
 
   componentDidMount() {
     $.ajax({
       type: 'GET',
-      url: 'http://127.0.0.1:1128/repos',
+      url: url,
       dataType: 'json',
       success: (res) => {
-        this.setState({ repos: res }, () => console.log(this.state.repos))
+        this.setState({ repos: res })
       },
       error: (err) => { console.error(err); }
     })
   }
 
   search (term) {
-    // $.ajax({
-    //   type: 'POST',
-    //   url: 'http://127.0.0.1:1128/repos',
-    //   contentType: 'application/json',
-    //   data: JSON.stringify({username: `${term}`}),
-    //   success: () => { console.log('Success!'); },
-    //   error: (err) => { console.error(err); }
-    // })
-    $.ajax({
-      type: 'POST',
-      url: 'http://127.0.0.1:1128/repos',
-      data: { username: term },
-      success: (data, textStatus, jqXHR) => { console.log('Sucess!'); },
-      error: (request, err, errorThrown) => { console.error(errorThrown); }
-    })
+    $.post(url, { username: term }, (res) => {
+      $.get(url, (res) => {
+        this.setState({ repos: res })
+      })
+    });
   }
 
   render () {
