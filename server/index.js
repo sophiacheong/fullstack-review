@@ -1,10 +1,17 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const g = require('graphql-request');
+const TOKEN = require('../config.js');
 const { getReposByUsername } = require('../helpers/github.js');
 const { save, getRepo } = require('../database/index.js');
 let app = express();
 
 app.use(bodyParser.json());
+// try to do a api get request to get the schema and do a .then to transfer the schema
+const graphQLClient = new g.GraphQLClient('https://api.github.com/graphql', { headers: {
+  Authorization: `bearer ${TOKEN}`
+}})
+
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.static(__dirname + '/../client/dist'));
 app.use(function(req, res, next){
